@@ -1,2 +1,0 @@
-//db.movies.aggregate([{$match: {viewerRating:{$exists:true},viewerVotes:{$exists:true}}} ,{$group:{_id:'$year',avg:{$avg:'$viewerRating'},totalVotes:{$sum:'$viewerVotes'}}},{$sort:{avg:-1}}])
-
