@@ -1,7 +1,6 @@
 import * as sgMail from '@sendgrid/mail';
-import { MailData } from '@sendgrid/helpers/classes/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey("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");
 
 const MAIL_FROM = process.env.MAIL_FROM
 const MAIL_SETTINGS = {
@@ -14,7 +13,7 @@ export const sendMailWithNewPassword = (to: string, newPassword: string) => {
     return sgMail.send({
         to,
         from: MAIL_FROM,
-        subject: `${process.env.APP_NAME} - New Password`,
+        subject: `QarApp - New Password`,
         text: 'Your new Password',
         html: `<strong>${newPassword}</strong>`,
         mailSettings: MAIL_SETTINGS
@@ -22,13 +21,12 @@ export const sendMailWithNewPassword = (to: string, newPassword: string) => {
 }
 
 export const sendMailResgisterOK = (to: string) => {
-    console.log(0)
     return sgMail.send({
         to,
         from: MAIL_FROM,
-        subject: `${process.env.APP_NAME} - New Password`,
-        text: 'Welcome to MyApp',
-        html: '<strong>Thanks!</strong>',
+        subject: `QarApp - Registred`,
+        text: 'Welcome !',
+        html: '<strong></strong>',
         mailSettings: MAIL_SETTINGS
     });
 }
@@ -58,9 +56,9 @@ export const sendTestMail = () => {
     // return sgMail.send(testMessage);
     const msg = {
         to: 'ricardo.reves@gmail.com',
-        from: 'qar@cadze.ch',
+        from: 'noreply@cadze.ch',
         subject: 'Test - Quick Accident Report',
-        text: 'Welcome to My App',
+        text: 'Welcome to Qar App',
         html: '<strong>Thanks 😊</strong>',
     };
     sgMail.send(msg).then(_ => console.log(_));
