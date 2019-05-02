@@ -1,8 +1,7 @@
 import * as sgMail from '@sendgrid/mail';
 import { MailData } from '@sendgrid/helpers/classes/mail';
 
-sgMail.setApiKey("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");
-console.log(process.env.SENDGRID_API_KEY)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const MAIL_FROM = process.env.MAIL_FROM
 const MAIL_SETTINGS = {
@@ -64,5 +63,5 @@ export const sendTestMail = () => {
         text: 'Welcome to My App',
         html: '<strong>Thanks 😊</strong>',
     };
-    sgMail.send(msg).then(_=>console.log(_));
+    sgMail.send(msg).then(_ => console.log(_));
 }
