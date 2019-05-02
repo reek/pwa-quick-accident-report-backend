@@ -1,13 +1,13 @@
 {
-  "name": "nat-mwad",
+  "name": "Qar App",
   "version": "1.0.0",
-  "description": "",
+  "description": "Quick Accident Report",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require ts-node/register ./**/*.spec.ts",
     "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/app.js\"",
     "start": "node app.js",
-    "deploy": "tsc && cp ./package.json ./dist/package.json && cp ./.gitignore ./dist/.gitignore && git add -f ./dist/ && git add --all && git commit -m 'upd version - `date`' && git subtree split -P dist -b heroku-serve && git rm -r --cached ./dist/ && git add --all && git commit -m 'rm .temp folder' && git push heroku heroku-serve:master --force && git branch -D heroku-serve && heroku ps:scale web=1 && heroku open",
+    "deploy:heroku": "tsc && cp ./package.json ./dist/package.json && cp ./.gitignore ./dist/.gitignore && git add -f ./dist/ && git add --all && git commit -m 'upd version - `date`' && git subtree split -P dist -b heroku-serve && git rm -r --cached ./dist/ && git add --all && git commit -m 'rm .temp folder' && git push heroku heroku-serve:master --force && git branch -D heroku-serve && heroku ps:scale web=1 && heroku open",
     "mongod": "mongod --dbpath /home/reek/db/",
     "mongo:backup": "mongodump --db express",
     "mongo:restore": "mongorestore --db express --drop ./dump/express",
