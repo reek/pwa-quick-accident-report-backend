@@ -44,7 +44,7 @@ export const testRouter = express.Router()
                 birthDate: "1970-01-01",
                 gender: 0,
                 email: "elonmusk@spacex.com",
-                phone: "022 999 99 99",
+                phoneNumber: "022 999 99 99",
                 drivingLicense: "999999999",
                 address: {
                     street: "24, Route des Acacias",
@@ -57,7 +57,7 @@ export const testRouter = express.Router()
                 }
             },
             vehicles: [{
-                _id: "hjghlhjvujztcjjvzvukvjvku",
+                // add _id with mongo compass type ObjectID
                 type: 0,
                 imageUrl: "https://i.imgur.com/iAWl946.jpg",
                 make: 'Tesla',

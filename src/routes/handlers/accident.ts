@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { UserModel, IUserDoc } from '../../models/user';
 import { Request, Response } from "express";
+import { uploadImagesUrlAsync } from '../../providers/imgur/imgur';
 const ObjectId = mongoose.Types.ObjectId;
 
 
@@ -23,12 +24,19 @@ export const getUserAccidentsHandler = (req: Request & { tokenContent?: any }, r
 };
 
 
-export const newUserAccidentHandler = (req: Request & { tokenContent?: any }, res: Response) => {
+export const newUserAccidentHandler = async (req: Request & { tokenContent?: any }, res: Response) => {
     const uid = req.tokenContent.userId;
-    const { date, time } = req.body;
-    if (!date || !time) {
+    const { date, time, images } = req.body;
+    if (!date || !time || !images) {
         return res.status(400).json({ error: { code: 400, message: 'Missing data for accident creation' } });
     }
+
+    // upload images to imgur and replace old by new url
+    const urls = await uploadImagesUrlAsync(images)
+    req.body.images = images.map((value, i) => {
+        value.imageUrl = urls[i] // new urls
+        return value
+    })
 
     UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $push: { accidents: req.body } }, { new: true })
         .then((user: IUserDoc) => {

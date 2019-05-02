@@ -4,6 +4,7 @@ import { IAddress, addressSchema } from './address';
 export interface IAccidentImages {
   title: string,
   imageUrl: string
+  ocr?: string
 }
 
 export const accidentImagesSchema = new mongoose.Schema({
@@ -11,9 +12,13 @@ export const accidentImagesSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  time: {
+  imageUrl: {
     type: String,
     required: true
+  },
+  ocr: {
+    type: String,
+    required: false
   }
 })
 
@@ -23,9 +28,16 @@ export interface IAccident {
   time: string
   address: IAddress
   images: IAccidentImages[]
-  description?: string
-  notes?: string
-  contacts?: any
+  gender: string
+  $birthDate: string
+  firstName: string
+  lastName: string
+  email: string
+  phoneNumber: string
+  drivingLicense: string
+  compagny: string
+  policyNumber: string
+  remarks: string
 }
 
 export const accidentSchema = new mongoose.Schema({
@@ -39,16 +51,44 @@ export const accidentSchema = new mongoose.Schema({
   },
   address: addressSchema,
   images: [accidentImagesSchema],
-  description: {
+  gender: {
     type: String,
-    required: false
+    required: true
   },
-  notes: {
+  birthDate: {
     type: String,
-    required: false
+    required: true
   },
-  contacts: {
+  firstName: {
     type: String,
-    required: false
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  phoneNumber: {
+    type: String,
+    required: true
+  },
+  drivingLicense: {
+    type: String,
+    required: true
+  },
+  compagny: {
+    type: String,
+    required: true
+  },
+  policyNumber: {
+    type: String,
+    required: true
+  },
+  remarks: {
+    type: String,
+    required: true
   }
 })
