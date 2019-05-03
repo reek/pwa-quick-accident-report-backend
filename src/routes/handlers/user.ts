@@ -55,7 +55,7 @@ export const addUserFeedbackHandler = (req: Request & { tokenContent?: any }, re
 
   bot.on('start', () => {
     // get all channels
-    //bot.getChannels().then(_=> console.log(_))
+    bot.getChannels().then(_=> console.log(_))
 
     // params: https://api.slack.com/methods/chat.postMessage
     const params = {
@@ -63,7 +63,7 @@ export const addUserFeedbackHandler = (req: Request & { tokenContent?: any }, re
     };
 
     // define channel: https://my.slack.com/services 
-    bot.postMessage('CJ84WPFGX', req.body && req.body.feedback || Date.now(), params)
+    bot.postMessage('CJD9AMSRW', req.body && req.body.feedback || Date.now(), params)
       .then(data => res.json(data))
       .catch(err => res.status(500).json({ error: { code: 500, message: err.toString() } }))
   })
