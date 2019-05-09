@@ -38,7 +38,7 @@ export const newUserAccidentHandler = async (req: Request & { tokenContent?: any
         return value
     })
 
-    UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $push: { accidents: req.body } }, { new: true })
+    UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $push: { accidents: req.body } }, { runValidators: true, new: true })
         .then((user: IUserDoc) => {
             if (user && user.accidents) {
                 return res.json({ accidents: user.accidents });
@@ -88,7 +88,7 @@ db.users.update(
 db.users.update({_id: ObjectId('5caf55597aa92d612e2c935c'), 'accidents._id': ObjectId('5caf7f9da01420418b375c0a')}, 
     { $set: { 'accidents.$.date': '2021-01-01', 'accidents.$.time': '08:00'  }  })
     */
-    UserModel.findOneAndUpdate({ _id: ObjectId(uid), 'accidents._id': ObjectId(id) }, { $set: { 'accidents.$': req.body } }, { new: true })
+    UserModel.findOneAndUpdate({ _id: ObjectId(uid), 'accidents._id': ObjectId(id) }, { $set: { 'accidents.$': req.body } }, { runValidators: true, new: true })
         .then((user: IUserDoc) => {
             console.log(user)
             if (user) {

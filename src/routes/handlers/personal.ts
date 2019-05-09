@@ -24,7 +24,7 @@ export const getUserPersonalHandler = (req: Request & { tokenContent?: any }, re
 
 export const updateUserPersonalHandler = (req: Request & { tokenContent?: any }, res: Response) => {
   const uid = req.tokenContent.userId;
-  UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $set: { personal: req.body } }, { new: true })
+  UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $set: { personal: req.body } }, { runValidators: true, new: true })
     .then((user: IUserDoc) => {
       if (user) {
         delete user.password;

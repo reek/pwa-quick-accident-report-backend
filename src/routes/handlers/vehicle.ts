@@ -30,7 +30,7 @@ export const newUserVehicleHandler = (req: Request & { tokenContent?: any }, res
         return res.status(400).json({ error: { code: 400, message: 'Missing data for vehicle creation' } });
     }
 
-    UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $push: { vehicles: req.body } }, { new: true })
+    UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $push: { vehicles: req.body } }, { runValidators: true, new: true })
         .then((user: IUserDoc) => {
             if (user && user.vehicles) {
                 return res.json({ vehicles: user.vehicles });
@@ -80,7 +80,7 @@ db.users.update(
 db.users.update({_id: ObjectId('5caf55597aa92d612e2c935c'), 'vehicles._id': ObjectId('5caf7f9da01420418b375c0a')}, 
     { $set: { 'vehicles.$.date': '2021-01-01', 'vehicles.$.time': '08:00'  }  })
     */
-    UserModel.updateOne({ _id: ObjectId(uid), 'vehicles._id': ObjectId(id) }, { $set: { 'vehicles.$': req.body } }, { new: true })
+    UserModel.updateOne({ _id: ObjectId(uid), 'vehicles._id': ObjectId(id) }, { $set: { 'vehicles.$': req.body } }, { runValidators: true, new: true })
         .then((user: IUserDoc) => {
             console.log(user)
             if (user) {

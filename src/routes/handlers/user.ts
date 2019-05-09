@@ -28,7 +28,7 @@ export const updateUserHandler = (req: Request & { tokenContent?: any }, res: Re
   if (req.body.password) {
     req.body.password = UserModel.hashPassword(req.body.password);
   }
-  UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $set: req.body }, { new: true })
+  UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $set: req.body }, { runValidators: true, new: true })
     .then((user: IUserDoc) => {
       if (user) {
         delete user.password;
