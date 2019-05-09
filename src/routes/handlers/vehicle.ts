@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { UserModel, IUserDoc } from '../../models/user';
 import { Request, Response } from "express";
+import { uploadImageBase64Asnc } from '../../providers/imgur/imgur';
 const ObjectId = mongoose.Types.ObjectId;
 
 
@@ -23,12 +24,15 @@ export const getUserVehiclesHandler = (req: Request & { tokenContent?: any }, re
 };
 
 
-export const newUserVehicleHandler = (req: Request & { tokenContent?: any }, res: Response) => {
+export const newUserVehicleHandler = async (req: Request & { tokenContent?: any }, res: Response) => {
     const uid = req.tokenContent.userId;
-    const { make, model } = req.body;
-    if (!make || !model) {
+    const { make, model, imageUrl } = req.body;
+    if (!make || !model || !imageUrl) {
         return res.status(400).json({ error: { code: 400, message: 'Missing data for vehicle creation' } });
     }
+
+    // upload images to imgur and replace old by new url
+    req.body.imageUrl = await uploadImageBase64Asnc(imageUrl)
 
     UserModel.findOneAndUpdate({ _id: ObjectId(uid) }, { $push: { vehicles: req.body } }, { runValidators: true, new: true })
         .then((user: IUserDoc) => {
