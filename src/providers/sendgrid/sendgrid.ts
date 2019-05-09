@@ -1,7 +1,10 @@
 import * as sgMail from '@sendgrid/mail';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-sgMail.setApiKey("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");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+const MAIL_TO = process.env.MAIL_TO
 const MAIL_FROM = process.env.MAIL_FROM
 const MAIL_SETTINGS = {
     sandboxMode: {
@@ -13,9 +16,9 @@ export const sendMailWithNewPassword = (to: string, newPassword: string) => {
     return sgMail.send({
         to,
         from: MAIL_FROM,
-        subject: `QarApp - New Password`,
-        text: 'Your new Password',
-        html: `<strong>${newPassword}</strong>`,
+        subject: `Qar App - New Password`,
+        text: `Your new Password ${newPassword}`,
+        html: '<strong>Thanks 😊</strong>',
         mailSettings: MAIL_SETTINGS
     });
 }
@@ -24,16 +27,16 @@ export const sendMailResgisterOK = (to: string) => {
     return sgMail.send({
         to,
         from: MAIL_FROM,
-        subject: `QarApp - Registred`,
-        text: 'Welcome !',
-        html: '<strong></strong>',
+        subject: `Qar App - Registred`,
+        text: 'Registration completed!',
+        html: '<strong>Thanks 😊</strong>',
         mailSettings: MAIL_SETTINGS
     });
 }
 
 
-
 export const sendTestMail = () => {
+    console.log(process.env.SENDGRID_API_KEY, process.env.MAIL_FROM)
     // const testMessage: MailData = {
     //     to: 'rockdale@zilmail.gq',
     //     from: MAIL_FROM,
@@ -55,10 +58,10 @@ export const sendTestMail = () => {
     // };
     // return sgMail.send(testMessage);
     const msg = {
-        to: 'ricardo.reves@gmail.com',
-        from: 'noreply@cadze.ch',
+        to: MAIL_TO,
+        from: MAIL_FROM,
         subject: 'Test - Quick Accident Report',
-        text: 'Welcome to Qar App',
+        text: Date.now().toString(),
         html: '<strong>Thanks 😊</strong>',
     };
     sgMail.send(msg).then(_ => console.log(_));
