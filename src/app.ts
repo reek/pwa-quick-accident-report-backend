@@ -65,12 +65,11 @@ database
 
       // routes
       app.get('/', (req, res) => res.json({ message: 'Please use /api/' }))
-         .use('/api/test', testRouter)
+         //.use('/api/test', testRouter)
          .use('/api/auth', authRouter)
-         .use('/api/insurances', insuranceRouter)
          .use(authMiddleware)
          .use('/api/users', userRouter)
-
+         .use('/api/insurances', insuranceRouter)
 
       // add error handlers
       app.use(internalErrorMiddleware)
