@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import { UserModel, IUserDoc, IUser } from '../models/user';
 import { Request, Response } from "express";
 import { sendMailWithNewPassword, sendMailResgisterOK } from '../providers/sendgrid/sendgrid';
+import { generatePassword } from '../utils/generate.password';
 
 export const authRouter = express.Router()
 
@@ -15,6 +16,7 @@ export const authRouter = express.Router()
     if (!email || !password) {
       return res.status(400).json({ error: { code: 400, message: 'Missing data for user registration' } });
     }
+
     // check user already exists
     UserModel.findOne({ email })
       .then(user => user !== null) // ensure boolean
@@ -25,6 +27,10 @@ export const authRouter = express.Router()
           user.password = UserModel.hashPassword(password)
           user.setAvatar(email)
           user.setUsername(email)
+          user.personal.email = email
+
+          // send confirmation mail
+          sendMailResgisterOK(email)
           return user.save()
         }
         return null;
@@ -84,7 +90,8 @@ export const authRouter = express.Router()
       .then(user => {
         if (user !== null) {
           res.json({ result: `A email with new password has been sent to ${email}` });
-          return sendMailWithNewPassword(email, "123456")
+          const newPassword = generatePassword()
+          return sendMailWithNewPassword(email, newPassword)
         }
         res.status(400).json({ error: { code: 400, message: 'Email not found' } });
       })
