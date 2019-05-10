@@ -36,7 +36,6 @@ export const sendMailResgisterOK = (to: string) => {
 
 
 export const sendTestMail = () => {
-    console.log(process.env.SENDGRID_API_KEY, process.env.MAIL_FROM)
     // const testMessage: MailData = {
     //     to: 'rockdale@zilmail.gq',
     //     from: MAIL_FROM,
