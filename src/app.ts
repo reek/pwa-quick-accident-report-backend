@@ -18,6 +18,7 @@ import { authRouter } from './routes/auth';
 import { userRouter } from './routes/user';
 import { insuranceRouter } from './routes/insurance';
 import { testRouter } from './routes/test';
+import { providerRouter } from './routes/provider';
 
 
 
@@ -65,9 +66,10 @@ database
 
       // routes
       app.get('/', (req, res) => res.json({ message: 'Please use /api/' }))
-         //.use('/api/test', testRouter)
+         .use('/api/test', testRouter)
          .use('/api/auth', authRouter)
          .use(authMiddleware)
+         .use('/api/provider', providerRouter)
          .use('/api/users', userRouter)
          .use('/api/insurances', insuranceRouter)
 
