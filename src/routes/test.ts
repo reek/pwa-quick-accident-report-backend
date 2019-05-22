@@ -38,6 +38,8 @@ export const testRouter = express.Router()
         user.collection.insert({
             email: 'test@mail.com',
             password: '$2a$10$YEzsRuLG0.jo7b7/3LCSFeHR1fpCk1L9EUWCzGZkALK6oVur3gHrK', // 1234
+            verified: false,
+            avatar: "assets/images/avatar.svg",
             personal: {
                 firstName: 'Elon',
                 lastName: 'Musk',
@@ -62,7 +64,7 @@ export const testRouter = express.Router()
                 imageUrl: "https://i.imgur.com/iAWl946.jpg",
                 make: 'Tesla',
                 model: 'Model S',
-                plateNumber: "GE 999999",
+                plateNumber: "GE 999 999",
                 registrationNumber: "999.999.999",
                 insuranceCompagny: "AXA winterthur",
                 insurancePolicyNumber: "AXA-999-999-999"
@@ -87,84 +89,96 @@ export const testRouter = express.Router()
         insurance.collection.insert([
             {
                 "logo": "allianz.jpg",
-                "compagny": "Allianz Suisse",
+                "description": "",
+                "company": "Allianz Suisse",
                 "email": "info@allianz-suisse.ch/",
                 "website": "https://www.allianz-suisse.ch/",
                 "phone": "058 358 7111"
             },
             {
                 "logo": "axa-winterthur.jpg",
-                "compagny": "Axa Winterthur",
+                "description": "",
+                "company": "Axa Winterthur",
                 "email": "info@axa-winterthur.ch",
                 "website": "https://www.axa-winterthur.ch/",
                 "phone": "0800 809 809"
             },
             {
                 "logo": "baloise.jpg",
-                "compagny": "Bâloise",
+                "description": "",
+                "company": "Bâloise",
                 "email": "info@baloise.ch",
                 "website": "https://www.baloise.ch/",
                 "phone": "0800 24 800 800"
             },
             {
                 "logo": "elvia.jpg",
-                "compagny": "ELVIA",
+                "description": "",
+                "company": "ELVIA",
                 "email": "info@elvia.ch",
                 "website": "https://www.elvia.ch/",
                 "phone": "0800 055 088"
             },
             {
                 "logo": "generali.jpg",
-                "compagny": "Generali",
+                "description": "",
+                "company": "Generali",
                 "email": "info@generali.ch",
                 "website": "https://www.generali.ch/",
                 "phone": "058 472 40 40"
             },
             {
                 "logo": "helvetia.jpg",
-                "compagny": "Helvetia",
+                "description": "",
+                "company": "Helvetia",
                 "email": "info@helvetia.ch",
                 "website": "https://www.helvetia.ch/",
                 "phone": "058 280 1000"
             },
             {
                 "logo": "lamobiliere.jpg",
-                "compagny": "La Mobilière",
+                "description": "",
+                "company": "La Mobilière",
                 "email": "info@mobi.ch",
                 "website": "https://www.mobi.ch/",
                 "phone": "031 389 61 11"
             },
             {
                 "logo": "smile-direct.jpg",
-                "compagny": "smile.direct",
+                "description": "",
+                "company": "smile.direct",
                 "email": "info@smile-direct.ch",
                 "website": "https://www.smile-direct.ch/",
                 "phone": "0844 848 444"
             },
             {
                 "logo": "sympany.jpg",
-                "compagny": "Sympany",
+                "description": "",
+                "company": "Sympany",
                 "email": "info@sympany.ch",
                 "website": "https://www.sympany.ch/",
                 "phone": "0800 455 455"
             },
             {
                 "logo": "tcs.jpg",
-                "compagny": "TCS",
+                "description": "",
+                "company": "TCS",
                 "email": "info@tcs.ch",
                 "website": "https://www.tcs.ch/",
                 "phone": "0800 801 000"
             },
             {
                 "logo": "vaudoise.jpg",
-                "compagny": "Vaudoise",
+                "description": "",
+                "company": "Vaudoise",
                 "email": "info@vaudoise.ch",
                 "website": "https://www.vaudoise.ch/",
                 "phone": "0800 811 911"
             },
             {
                 "logo": "zurich.jpg",
-                "compagny": "Zurich",
+                "description": "",
+                "company": "Zurich",
                 "email": "info@zurich.ch",
                 "website": "https://www.zurich.ch/",
                 "phone": "0800 80 80 80"
