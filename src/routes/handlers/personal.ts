@@ -9,7 +9,7 @@ export const getUserPersonalHandler = (req: Request & { tokenContent?: any }, re
   UserModel.findOne({ _id: ObjectId(uid) }, { personal: 1 })
     .then((user: IUserDoc) => {
       if (user) {
-        return res.json({ user })
+        return res.json({ personal: user.personal || {} })
       }
       return res.status(400).json({ error: { code: 400, message: 'User personal not found' } });
     })
