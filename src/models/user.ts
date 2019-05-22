@@ -12,6 +12,7 @@ import { IAccident, accidentSchema } from './accident';
 export interface IUser {
   username: string;
   email: string;
+  verified: boolean;
   password?: string;
   avatar: string;
   personal: IPersonal;
@@ -43,6 +44,10 @@ export const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     max: 50
+  },
+  verified: {
+    type: Boolean,
+    required: true
   },
   password: {
     type: String,
