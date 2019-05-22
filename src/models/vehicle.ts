@@ -12,7 +12,7 @@ export interface IVehicle {
   model: string
   plateNumber: string // No plaques
   registrationNumber: string
-  insuranceCompagny: string
+  insuranceCompany: string
   insurancePolicyNumber: string
 }
 
@@ -45,7 +45,7 @@ export const vehicleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  insuranceCompagny: {
+  insuranceCompany: {
     type: String,
     required: true
   },
