@@ -1,9 +1,8 @@
 import * as express from 'express';
-import * as mongoose from 'mongoose';
-import { UserModel, IUserDoc, IUser } from '../models/user';
+import * as jwt from 'jsonwebtoken';
+import { UserModel, IUser } from '../models/user';
 import { Request, Response } from "express";
-import { sendMailWithNewPassword, sendMailResgisterOK } from '../providers/sendgrid/sendgrid';
-import { generatePassword } from '../utils/generate.password';
+import { sendMailWithResetPasswordLink, sendMailResgisterOK } from '../providers/sendgrid/sendgrid';
 
 export const authRouter = express.Router()
 
@@ -14,23 +13,19 @@ export const authRouter = express.Router()
     // validation
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ error: { code: 400, message: 'Missing data for user registration' } });
+      return res.status(400).json({ error: { code: 400, message: 'Missing data for user registration 😕' } });
     }
 
     // check user already exists
     UserModel.findOne({ email })
       .then(user => user !== null) // ensure boolean
       .then(found => {
-        console.log(found)
         if (!found) {
           const user = new UserModel(req.body);
+          user.verified = false
           user.password = UserModel.hashPassword(password)
           user.setAvatar(email)
           user.setUsername(email)
-          user.personal.email = email
-
-          // send confirmation mail
-          sendMailResgisterOK(email)
           return user.save()
         }
         return null;
@@ -40,13 +35,11 @@ export const authRouter = express.Router()
           res.json({ user, token: user.getToken() });
           return sendMailResgisterOK(email)
         }
-        res.status(400).json({ error: { code: 400, message: 'User already exists' } });
+        res.status(400).json({ error: { code: 400, message: 'User already exists 😕' } });
       })
       .catch(err => {
-        console.error('Error when trying register');
-        console.error(req.body);
-        console.error(err);
-        res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
+        console.error('Error when trying register', req.body, err);
+        res.status(500).json({ error: { code: 500, message: 'Internal server error 😬' } });
       });
   })
 
@@ -55,7 +48,7 @@ export const authRouter = express.Router()
     // validation
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ error: { code: 400, message: 'Missing data for login' } });
+      return res.status(400).json({ error: { code: 400, message: 'Missing data for login 😕' } });
     }
 
     UserModel.findOne({ email })
@@ -63,52 +56,75 @@ export const authRouter = express.Router()
         if (user && user.comparePassword(password)) {
           const userModel: IUser = user.toJSON();
           delete userModel.password;
-          res.json({ user: userModel, token: user.getToken() });
+          return res.json({ user: userModel, token: user.getToken() });
         }
-        else {
-          res.status(400).json({ error: { code: 400, message: 'Email or password incorrect' } });
-        }
+        res.status(400).json({ error: { code: 400, message: 'Email or Password incorrect 😕' } });
       })
       .catch(err => {
-        console.error('Error when trying login');
-        console.error(req.body);
-        console.error(err);
-        res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
+        console.error('Error when trying login', req.body, err);
+        res.status(500).json({ error: { code: 500, message: 'Internal server error 😬' } });
       });
   })
 
   // forgot password
-  .post('/forgot', (req: Request & { tokenContent?: any }, res: Response) => {
+  .post('/forgot/password', (req: Request & { tokenContent?: any }, res: Response) => {
     // validation
-    const { email } = req.body;
-    if (!email) {
-      return res.status(400).json({ error: { code: 400, message: 'Missing email for password recovery' } });
+    const { email, baseUrl } = req.body;
+    if (!email || !baseUrl) {
+      return res.status(400).json({ error: { code: 400, message: 'Missing data for password reseting 😕' } });
     }
 
-    // send email with new password
+    // send email with reset link
     UserModel.findOne({ email })
       .then(user => {
         if (user !== null) {
-          res.json({ result: `A email with new password has been sent to ${email}` });
-          const newPassword = generatePassword()
-          return sendMailWithNewPassword(email, newPassword)
+          const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+            expiresIn: "48h"
+          });
+          const link = `${req.body.baseUrl}/${token}`
+          sendMailWithResetPasswordLink(email, link)
+          return res.json({ message: `A email with a reset password link has been sent to ${email} 😃` });
         }
-        res.status(400).json({ error: { code: 400, message: 'Email not found' } });
+        res.status(200).json({ message: 'Sorry, no account with this email 😕' });
       })
       .catch(err => {
-        console.error('Error when trying recovery account');
-        console.error(req.body);
-        console.error(err);
-        res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
+        console.error('Error when trying recovery account', req.body, err);
+        res.status(500).json({ error: { code: 500, message: 'Internal server error 😬' } });
       });
   })
 
-  // check if email exists
-  .post('/check/email', (req: Request & { tokenContent?: any }, res: Response) => {
+  // reset password
+  .post('/reset/password', (req: Request & { tokenContent?: any }, res: Response) => {
+    // validation
+    const { email, baseUrl } = req.body;
+    if (!email || !baseUrl) {
+      return res.status(400).json({ error: { code: 400, message: 'Missing data for password reseting 😕' } });
+    }
+
+    // send email with reset link
+    UserModel.findOne({ email })
+      .then(user => {
+        if (user !== null) {
+          const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+            expiresIn: "2h"
+          });
+          const link = `${req.body.baseUrl}/${token}`
+          return res.json({ message: `A email with a link has been sent to ${email} 😃` });
+        }
+        res.status(200).json({ message: 'Sorry, no account with this email 😕' });
+      })
+      .catch(err => {
+        console.error('Error when trying recovery account', req.body, err);
+        res.status(500).json({ error: { code: 500, message: 'Internal server error 😬' } });
+      });
+  })
+
+  // is email taken
+  .post('/email/taken', (req: Request & { tokenContent?: any }, res: Response) => {
     // validation
     const { email } = req.body;
     if (!email) {
-      return res.status(400).json({ error: { code: 400, message: 'Missing email for verify' } });
+      return res.status(400).json({ error: { code: 400, message: 'Missing data for email taking 😕' } });
     }
 
     UserModel.findOne({ email })
@@ -118,10 +134,28 @@ export const authRouter = express.Router()
         res.json({ exists: false });
       })
       .catch(err => {
-        console.error('Error when trying check email');
-        console.error(req.body);
-        console.error(err);
-        res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
+        console.error('Error when trying check email', req.body, err);
+        res.status(500).json({ error: { code: 500, message: 'Internal server error 😬' } });
+      });
+  })
+
+  // user email verified
+  .post('/email/verified', (req: Request & { tokenContent?: any }, res: Response) => {
+    // validation
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: { code: 400, message: 'Missing data for email verification 😕' } });
+    }
+
+    UserModel.findOne({ email })
+      .then(user => {
+        if (user)
+          return res.json({ exists: true });
+        res.json({ exists: false });
+      })
+      .catch(err => {
+        console.error('Error when trying verify email', req.body, err);
+        res.status(500).json({ error: { code: 500, message: 'Internal server error 😬' } });
       });
   })
 
