@@ -12,13 +12,13 @@ const MAIL_SETTINGS = {
     }
 }
 
-export const sendMailWithNewPassword = (to: string, newPassword: string) => {
+export const sendMailWithResetPasswordLink = (to: string, link: string) => {
     return sgMail.send({
         to,
         from: MAIL_FROM,
-        subject: `Qar App - New Password`,
-        text: `Your new Password ${newPassword}`,
-        html: '<strong>Thanks 😊</strong>',
+        subject: `Qar App - Reset Password`,
+        text: `Hello!`,
+        html: `<a href="${link}">Click here to change password</a>`,
         mailSettings: MAIL_SETTINGS
     });
 }
@@ -27,8 +27,8 @@ export const sendMailResgisterOK = (to: string) => {
     return sgMail.send({
         to,
         from: MAIL_FROM,
-        subject: `Qar App - Registred`,
-        text: 'Registration completed!',
+        subject: `Qar App - Registration completed`,
+        text: 'Registration completed',
         html: '<strong>Thanks 😊</strong>',
         mailSettings: MAIL_SETTINGS
     });
