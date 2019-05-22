@@ -2,7 +2,8 @@ import * as mongoose from 'mongoose';
 
 export interface IInsurance {
     logo: string
-    compagny: string
+    description: string
+    company: string
     phone: string
     email: string
     website: string
@@ -13,7 +14,11 @@ export const insuranceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    compagny: {
+    description: {
+        type: String,
+        required: true
+    },
+    company: {
         type: String,
         required: true
     },
