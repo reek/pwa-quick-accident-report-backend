@@ -16,9 +16,7 @@ export const getUserAccidentsHandler = (req: Request & { tokenContent?: any }, r
             return res.status(400).json({ error: { code: 400, message: 'User accidents not found' } });
         })
         .catch(err => {
-            console.error('Error when getting user accidents');
-            console.error(req.body);
-            console.error(err);
+            console.error('Error when getting user accidents', req.body, err);
             res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
         });
 };
@@ -26,10 +24,14 @@ export const getUserAccidentsHandler = (req: Request & { tokenContent?: any }, r
 
 export const newUserAccidentHandler = async (req: Request & { tokenContent?: any }, res: Response) => {
     const uid = req.tokenContent.userId;
-    const { date, time, images } = req.body;
-    if (!date || !time || !images || !Array.isArray(images)) {
+    const { location, images, thirdPartyPerson, thirdPartyVehicle } = req.body;
+    if (!location || !images || !thirdPartyPerson || !thirdPartyVehicle || !Array.isArray(images)) {
         return res.status(400).json({ error: { code: 400, message: 'Missing data for accident creation' } });
     }
+
+    // remove because generate cast error
+    delete thirdPartyVehicle._id
+    delete thirdPartyVehicle.imageUrl
 
     // upload images to imgur and replace old by new url
     const urls = await uploadImagesBase64Async(images)
@@ -46,9 +48,7 @@ export const newUserAccidentHandler = async (req: Request & { tokenContent?: any
             return res.status(400).json({ error: { code: 400, message: 'User accidents not found' } });
         })
         .catch(err => {
-            console.error('Error when adding a new user accident');
-            console.error(req.body);
-            console.error(err);
+            console.error('Error when adding a new user accident', req.body, err);
             res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
         });
 };
@@ -66,9 +66,7 @@ export const getUserAccidentHandler = (req: Request & { tokenContent?: any }, re
             return res.status(400).json({ error: { code: 400, message: 'User accidents not found' } });
         })
         .catch(err => {
-            console.error('Error when getting accident user');
-            console.error(req.body);
-            console.error(err);
+            console.error('Error when getting accident user', req.body, err);
             res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
         });
 };
@@ -91,15 +89,13 @@ db.users.update({_id: ObjectId('5caf55597aa92d612e2c935c'), 'accidents._id': Obj
     UserModel.findOneAndUpdate({ _id: ObjectId(uid), 'accidents._id': ObjectId(id) }, { $set: { 'accidents.$': req.body } }, { runValidators: true, new: true })
         .then((user: IUserDoc) => {
             console.log(user)
-            if (user) {
-                return res.json({ user });
+            if (user && user.accidents) {
+                return res.json({ accidents: user.accidents });
             }
             return res.status(400).json({ error: { code: 400, message: 'User accidents not found' } });
         })
         .catch(err => {
-            console.error('Error when updating accident user');
-            console.error(req.body);
-            console.error(err);
+            console.error('Error when updating accident user', req.body, err);
             res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
         });
 };
@@ -111,15 +107,13 @@ export const deleteUserAccidentHandler = (req: Request & { tokenContent?: any },
 
     UserModel.updateOne({ _id: ObjectId(uid) }, { $pull: { accidents: { _id: ObjectId(id) } } })
         .then((user: IUserDoc) => {
-            if (user) {
-                return res.json({ user });
+            if (user && user.accidents) {
+                return res.json({ accidents: user.accidents });
             }
             return res.status(400).json({ error: { code: 400, message: 'User accidents not found' } });
         })
         .catch(err => {
-            console.error('Error when deleting accident user');
-            console.error(req.body);
-            console.error(err);
+            console.error('Error when deleting accident user', req.body, err);
             res.status(500).json({ error: { code: 500, message: 'Internal server error' } });
         });
 };

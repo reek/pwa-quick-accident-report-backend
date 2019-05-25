@@ -1,5 +1,28 @@
 import * as mongoose from 'mongoose';
 import { IAddress, addressSchema } from './address';
+import { IWeather, weatherSchema } from './weather';
+import { IPerson, personSchema } from './person';
+import { IVehicle, vehicleSchema } from './vehicle';
+
+export interface IAccidentLocation {
+  date: string
+  time: string
+  weather: IWeather,
+  address: IAddress
+}
+
+export const accidentLocationSchema = new mongoose.Schema({
+  date: {
+    type: String,
+    required: true
+  },
+  time: {
+    type: String,
+    required: true
+  },
+  weather: weatherSchema,
+  address: addressSchema
+})
 
 export interface IAccidentImages {
   title: string,
@@ -24,71 +47,20 @@ export const accidentImagesSchema = new mongoose.Schema({
 
 export interface IAccident {
   _id?: string
-  date: string
-  time: string
-  address: IAddress
+  location: IAccidentLocation
   images: IAccidentImages[]
-  gender: string
-  $birthDate: string
-  firstName: string
-  lastName: string
-  email: string
-  phoneNumber: string
-  drivingLicense: string
-  compagny: string
-  policyNumber: string
-  remarks: string
+  thirdPartyPerson: IPerson
+  thirdPartyVehicle: IVehicle
+  notes?: string
 }
 
 export const accidentSchema = new mongoose.Schema({
-  date: {
-    type: String,
-    required: true
-  },
-  time: {
-    type: String,
-    required: true
-  },
-  address: addressSchema,
+  location: accidentLocationSchema,
   images: [accidentImagesSchema],
-  gender: {
+  thirdPartyPerson: personSchema,
+  thirdPartyVehicle: vehicleSchema,
+  notes: {
     type: String,
-    required: true
-  },
-  birthDate: {
-    type: String,
-    required: true
-  },
-  firstName: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  phoneNumber: {
-    type: String,
-    required: true
-  },
-  drivingLicense: {
-    type: String,
-    required: true
-  },
-  compagny: {
-    type: String,
-    required: true
-  },
-  policyNumber: {
-    type: String,
-    required: true
-  },
-  remarks: {
-    type: String,
-    required: true
+    required: false
   }
 })

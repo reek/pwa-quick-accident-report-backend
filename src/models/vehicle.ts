@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export enum EVehicleType {
-  CAR, MOTORBIKE, BIKE, TRUCK, BUS
+  CAR = "car", MOTORBIKE = "motorbike", BIKE = "bike", TRUCK = "truck", BUS = "bus"
 }
 
 export interface IVehicle {
@@ -18,13 +18,13 @@ export interface IVehicle {
 
 export const vehicleSchema = new mongoose.Schema({
   type: {
-    type: Number,
+    type: String,
     required: true,
     min: 0
   },
   imageUrl: {
     type: String,
-    required: true
+    required: false
   },
   make: {
     type: String,

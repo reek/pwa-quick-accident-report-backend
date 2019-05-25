@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { Md5 } from 'ts-md5';
-import { IPersonal, personalSchema } from './personal';
+import { IPerson, personSchema } from './person';
 import { IVehicle, vehicleSchema } from './vehicle';
 import { IAccident, accidentSchema } from './accident';
 
@@ -15,7 +15,7 @@ export interface IUser {
   verified: boolean;
   password?: string;
   avatar: string;
-  personal: IPersonal;
+  personal: IPerson;
   vehicles: IVehicle[];
   accidents: IAccident[];
 }
@@ -58,7 +58,7 @@ export const userSchema = new mongoose.Schema({
     required: true,
     default: 'https://www.gravatar.com/avatar/userEmailHashedInMd5'
   },
-  personal: personalSchema,
+  personal: personSchema,
   vehicles: [vehicleSchema],
   accidents: [accidentSchema]
 });

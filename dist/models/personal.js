@@ -1,24 +1,13 @@
-import * as mongoose from 'mongoose';
-import { IAddress, addressSchema } from './address';
-
-export enum EGender {
-    MALE, FEMALE
-}
-
-export interface IPersonal {
-    _id?: string
-    firstName: string
-    lastName: string
-    birthDate: string // 2018-07-22
-    gender: EGender
-    phoneNumber: string
-    email: string
-    drivingLicense?: string
-    address?: IAddress
-}
-
-
-export const personalSchema = new mongoose.Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose = require("mongoose");
+const address_1 = require("./address");
+var EGender;
+(function (EGender) {
+    EGender[EGender["MALE"] = 0] = "MALE";
+    EGender[EGender["FEMALE"] = 1] = "FEMALE";
+})(EGender = exports.EGender || (exports.EGender = {}));
+exports.personalSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
@@ -54,5 +43,5 @@ export const personalSchema = new mongoose.Schema({
         required: true,
         maxlength: 50
     },
-    address: addressSchema
-})
+    address: address_1.addressSchema
+});
