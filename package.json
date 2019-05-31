@@ -1,7 +1,9 @@
 {
-  "name": "app",
+  "name": "pwa-quick-accident-report-backend",
+  "description": "This application is intended to help the driver during a traffic accident.",
   "version": "1.0.0",
-  "description": "Quick Accident Report",
+  "author": "Ricardo Reves",
+  "homepage": "https://cadze.ch/",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require ts-node/register ./**/*.spec.ts",
@@ -13,7 +15,6 @@
     "mongo:restore": "mongorestore --db express --drop ./dump/express",
     "mongo:deploy": "sh deploy.sh"
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
