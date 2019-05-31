@@ -17,8 +17,8 @@ export const sendMailWithResetPasswordLink = (to: string, link: string) => {
         to,
         from: MAIL_FROM,
         subject: `Qar App - Reset Password`,
-        text: `Hello!`,
-        html: `<a href="${link}">Click here to change password</a>`,
+        text: `Afin de pouvoir changer .`,
+        html: `<a href="${link}">Link</a>`,
         mailSettings: MAIL_SETTINGS
     });
 }
