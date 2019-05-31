@@ -2,7 +2,7 @@
 
 # Quick Accident Report (Backend)
 
-[![Build Status](https://travis-ci.com/reek/pwa-quick-accident-report-backend.svg?branch=master)](https://travis-ci.com/reek/pwa-quick-accident-report-backend) [![Dependencies Status](https://david-dm.org/reek/pwa-quick-accident-report-backend/status.svg)](https://david-dm.org/reek/pwa-quick-accident-report-backend) [![Known Vulnerabilities](https://snyk.io/test/github/reek/pwa-quick-accident-report-backend/badge.svg)](https://snyk.io/test/github/reek/pwa-quick-accident-report-backend) [![Coverage Status](https://coveralls.io/repos/github/reek/pwa-quick-accident-report-backend/badge.svg?branch=master)](https://coveralls.io/github/reek/pwa-quick-accident-report-backend?branch=master)
+[![Build Status](https://travis-ci.com/reek/pwa-quick-accident-report-backend.svg?branch=master)](https://travis-ci.com/reek/pwa-quick-accident-report-backend) [![Dependencies Status](https://david-dm.org/reek/pwa-quick-accident-report-backend/status.svg)](https://david-dm.org/reek/pwa-quick-accident-report-backend) [![Known Vulnerabilities](https://snyk.io/test/github/reek/pwa-quick-accident-report-backend/badge.svg)](https://snyk.io/test/github/reek/pwa-quick-accident-report-backend)
 
 
 ## Overview
