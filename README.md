@@ -18,8 +18,8 @@ It will facilitate the collection of data for insurance or to warn emergency ser
 - You can't remember emergency numbers ?
 
 ## Project
-- [Front-end](https://reek.github.io/pwa-quick-accident-report/)
-- [Back-end](https://reek.github.io/pwa-quick-accident-report-backend/)
+- [Front-end](https://github.com/reek/pwa-quick-accident-report)
+- [Back-end](https://github.com/reek/pwa-quick-accident-report-backend)
 
 ## Back-end
 Server REST API endpoint.
