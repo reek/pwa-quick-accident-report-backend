@@ -1,0 +1,10 @@
+.DS_Store
+.env
+.env.prod
+.fuse*
+deploy.sh
+dist
+dump
+node_modules
+npm-debug.log
+package-lock.json
